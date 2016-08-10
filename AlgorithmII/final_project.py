@@ -24,11 +24,31 @@
 
 import pandas as pd
 
-def main():
-    #get_data()
+def portfolio(close, M,X,N,P):
+    ma = close.rolling(M).mean()
+    print(ma)
 
-    df = pd.read_csv('index_constituents',header=None, index = 1)
-    print(df)
+    ma[ma.index.year==2014]
+
+def get_yahoo_data(tickers,start,end,only_close=1):
+    import pandas_datareader.data as web
+
+    panel = web.DataReader(tickers, 'yahoo', start, end)
+
+    if only_close !=1:
+        return panel
+    else:
+        return panel['Adj Close']
+
+def main():
+    gspc = pd.read_csv('index_constituents', header=None, index_col=0, nrows=1)
+    #print(gspc)
+
+    close = get_yahoo_data(gspc.loc['GSPC_current'].tolist(), '20140101', '20160101')
+    #print(close.head())
+
+    portfolio(close,10,10,2,3)
+
 
 if __name__ == '__main__':
     main()
