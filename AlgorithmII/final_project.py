@@ -35,6 +35,7 @@ def find_trend(series):
     return regression.beta[0]
 
 def portfolio(close, M,X,N,P):
+    port_df = pd.DataFrame(index=range(2014, 2016), columns=close.columns).fillna(0)
 
     return_df = pd.DataFrame(index=range(2014,2016),columns=close.columns)
     for year in return_df.index:
@@ -43,10 +44,22 @@ def portfolio(close, M,X,N,P):
 
     ma = close.rolling(M).mean()
 
-    trend_df = pd.DataFrame(index=range(2014,2016),columns=ma.columns)
+    trend_df = pd.DataFrame(index=range(2014,2015),columns=ma.columns)
     for year in trend_df.index:
         for ticker in trend_df.columns:
             trend_df.loc[year,ticker] = find_trend(ma[ma.index.year==year][ticker].values)
+
+    for year in range(trend_df.index[0],trend_df.index[0]+N):
+        if year != trend_df.index[0]:
+            port_df.loc[year] = port_df.loc[year-1]
+        invest = trend_df.loc[year].abs().sort_values(ascending=False)[:X].index
+        for ticker in invest:
+            if(trend_df.loc[year,ticker]>0):
+                port_df.loc[year+1,ticker] += 1
+            else:
+                port_df.loc[year+1, ticker] -= 1
+
+    port_df*return_df.cumsum()[-1:]
 
 def get_yahoo_data(tickers,start,end,only_close=1):
     import pandas_datareader.data as web
