@@ -20,38 +20,50 @@
 #
 # Pass this function to optimizer and get optimal values for 4 parameters
 
-# SPX,A,AA,AAL,AAP,AAPL,ABBV,ABC,ABT,ACN,ADBE,ADI,ADM,ADP,ADS,ADSK,ADT,AEE,AEP,AES,AET,AFL,AGN,AIG,AIV,AIZ,AKAM,ALL,ALLE,ALXN,AMAT,AME,AMG,AMGN,AMP,AMT,AMZN,AN,ANTM,AON,APA,APC,APD,APH,ARG,ATVI,AVB,AVGO,AVY,AXP,AZO,BA,BAC,BAX,BBBY,BBT,BBY,BCR,BDX,BEN,BF/B,BHI,BIIB,BK,BLK,BLL,BMY,BRCM,BRK/B,BSX,BWA,BXLT,BXP,C,CA,CAG,CAH,CAM,CAT,CB,CBG,CBS,CCE,CCI,CCL,CELG,CERN,CF,CHD,CHK,CHRW,CI,CINF,CL,CLX,CMA,CMCSA,CME,CMG,CMI,CMS,CNP,CNX,COF,COG,COH,COL,COP,COST,CPB,CPGX,CRM,CSCO,CSRA,CSX,CTAS,CTL,CTSH,CTXS,CVC,CVS,CVX,D,DAL,DD,DE,DFS,DG,DGX,DHI,DHR,DIS,DISCA,DISCK,DLPH,DLTR,DNB,DO,DOV,DOW,DPS,DRI,DTE,DUK,DVA,DVN,EA,EBAY,ECL,ED,EFX,EIX,EL,EMC,EMN,EMR,ENDP,EOG,EQIX,EQR,EQT,ES,ESRX,ESS,ESV,ETFC,ETN,ETR,EW,EXC,EXPD,EXPE,F,FAST,FB,FCX,FDX,FE,FFIV,FIS,FISV,FITB,FLIR,FLR,FLS,FMC,FOSL,FOX,FOXA,FSLR,FTI,FTR,GAS,GD,GE,GGP,GILD,GIS,GLW,GM,GMCR,GME,GOOG,GOOGL,GPC,GPS,GRMN,GS,GT,GWW,HAL,HAR,HAS,HBAN,HBI,HCA,HCN,HCP,HD,HES,HIG,HOG,HON,HOT,HP,HPE,HPQ,HRB,HRL,HRS,HSIC,HST,HSY,HUM,IBM,ICE,IFF,ILMN,INTC,INTU,IP,IPG,IR,IRM,ISRG,ITW,IVZ,JBHT,JCI,JEC,JNJ,JNPR,JPM,JWN,K,KEY,KHC,KIM,KLAC,KMB,KMI,KMX,KO,KORS,KR,KSS,KSU,L,LB,LEG,LEN,LH,LLL,LLTC,LLY,LM,LMT,LNC,LOW,LRCX,LUK,LUV,LVLT,LYB,M,MA,MAC,MAR,MAS,MAT,MCD,MCHP,MCK,MCO,MDLZ,MDT,MET,MHK,MJN,MKC,MLM,MMC,MMM,MNK,MNST,MO,MON,MOS,MPC,MRK,MRO,MS,MSFT,MSI,MTB,MU,MUR,MYL,NAVI,NBL,NDAQ,NEE,NEM,NFLX,NFX,NI,NKE,NLSN,NOC,NOV,NRG,NSC,NTAP,NTRS,NUE,NVDA,NWL,NWS,NWSA,O,OI,OKE,OMC,ORCL,ORLY,OXY,PAYX,PBCT,PBI,PCAR,PCG,PCL,PCLN,PCP,PDCO,PEG,PEP,PFE,PFG,PG,PGR,PH,PHM,PKI,PLD,PM,PNC,PNR,PNW,POM,PPG,PPL,PRGO,PRU,PSA,PSX,PVH,PWR,PX,PXD,PYPL,QCOM,QRVO,R,RAI,RCL,REGN,RF,RHI,RHT,RIG,RL,ROK,ROP,ROST,RRC,RSG,RTN,SBUX,SCG,SCHW,SE,SEE,SHW,SIG,SJM,SLB,SLG,SNA,SNDK,SNI,SO,SPG,SPGI,SPLS,SRCL,SRE,STI,STJ,STT,STX,STZ,SWK,SWKS,SWN,SYF,SYK,SYMC,SYY,T,TAP,TDC,TE,TEL,TGNA,TGT,THC,TIF,TJX,TMK,TMO,TRIP,TROW,TRV,TSCO,TSN,TSO,TSS,TWC,TWX,TXN,TXT,TYC,UA,UAL,UHS,UNH,UNM,UNP,UPS,URBN,URI,USB,UTX,V,VAR,VFC,VIAB,VLO,VMC,VNO,VRSK,VRSN,VRTX,VTR,VZ,WAT,WBA,WDC,WEC,WFC,WFM,WHR,WM,WMB,WMT,WRK,WU,WY,WYN,WYNN,XEC,XEL,XL,XLNX,XOM,XRAY,XRX,XYL,YHOO,YUM,ZBH,ZION,ZTS
-
 import pandas as pd
+close = pd.DataFrame()
 
 def find_trend(series):
     import numpy as np
+
     ln = len(series)
     x = pd.Series(np.arange(ln))
-    #print(series,x)
     regression = pd.ols(y=series, x=x)
 
-    #print(regression.summary)
     return regression.beta[0]
 
-def portfolio(close, M,X,N,P):
-    port_df = pd.DataFrame(index=range(2014, 2016), columns=close.columns).fillna(0)
+def portfolio( array):
+    [M, X, N, P] = array
 
-    return_df = pd.DataFrame(index=range(2014,2016),columns=close.columns)
+    M=int(M)
+    X=int(X)
+    N=int(N)
+    P=P/100
+    port_df = pd.DataFrame(index=range(2006, 2016), columns=close.columns).fillna(0)
+
+    return_df = pd.DataFrame(index=range(2006,2016),columns=close.columns).fillna(0)
     for year in return_df.index:
         for ticker in return_df.columns:
-            return_df.loc[year,ticker] = close[close.index.year == year][ticker].sort_index()[-1:][0] / close[close.index.year == year][ticker].sort_index()[:1][0]
+            return_df.loc[year,ticker] = \
+                close[close.index.year == year][ticker].sort_index()[-1:][0] / \
+                close[close.index.year == year][ticker].sort_index()[:1][0]
 
     ma = close.rolling(M).mean()
 
-    trend_df = pd.DataFrame(index=range(2014,2015),columns=ma.columns)
+    trend_df = pd.DataFrame(index=range(2006,2016),columns=ma.columns).fillna(0)
     for year in trend_df.index:
         for ticker in trend_df.columns:
-            trend_df.loc[year,ticker] = find_trend(ma[ma.index.year==year][ticker].values)
+            data_series = ma[ma.index.year==year][ticker].dropna().values
+            if data_series.size == 0:
+                trend_df.loc[year, ticker] = 0
+            else:
+                trend_df.loc[year,ticker] = find_trend(data_series)
 
+    if N > trend_df.shape[0]:
+        return 0
     for year in range(trend_df.index[0],trend_df.index[0]+N):
         if year != trend_df.index[0]:
-            port_df.loc[year] = port_df.loc[year-1]
+            port_df.loc[year+1] = port_df.loc[year]
         invest = trend_df.loc[year].abs().sort_values(ascending=False)[:X].index
         for ticker in invest:
             if(trend_df.loc[year,ticker]>0):
@@ -59,7 +71,22 @@ def portfolio(close, M,X,N,P):
             else:
                 port_df.loc[year+1, ticker] -= 1
 
-    port_df*return_df.cumsum()[-1:]
+    for year in range(trend_df.index[0]+N,2015):
+        if year != trend_df.index[0]:
+            port_df.loc[year + 1] = port_df.loc[year]
+
+        worst = (return_df*port_df).cumsum().loc[year].sort_values()[:int(P*X*N)].index
+        port_df.loc[year+1,worst] = 0
+
+        invest = trend_df.loc[year].abs().sort_values(ascending=False)[:int(P*X*N)].index
+        for ticker in invest:
+            if (trend_df.loc[year, ticker] > 0):
+                port_df.loc[year + 1, ticker] += 1
+            else:
+                port_df.loc[year + 1, ticker] -= 1
+
+    #print(M,X,N,P,(port_df*return_df).cumsum()[-1:].sum(axis=1).values[0])
+    return (port_df*return_df).cumsum()[-1:].sum(axis=1).values[0]
 
 def get_yahoo_data(tickers,start,end,only_close=1):
     import pandas_datareader.data as web
@@ -73,12 +100,38 @@ def get_yahoo_data(tickers,start,end,only_close=1):
 
 def main():
     gspc = pd.read_csv('index_constituents', header=None, index_col=0, nrows=1)
-    #print(gspc)
 
-    close = get_yahoo_data(gspc.loc['GSPC_current'].tolist(), '20140101', '20160101')
-    #print(close.head())
+    global close
+    close = get_yahoo_data(gspc.loc['GSPC_current'].tolist(), '20060101', '20160101')
 
-    portfolio(close,10,10,2,3)
+    print(portfolio( [20, 2, 2, 50]))
+
+    # Could not determine how to make use of functions like minimize or techniques like gradient descent
+    # as I dont know what does the curve look like. So going to assume that function is steady and
+    # will keep changing the parameters one by one
+
+    #from scipy.optimize import minimize
+    #print(minimize(portfolio,[10,2,2,50],method='SLSQP',bounds=((10,200),(1,100),(1,10),(1,100))))
+
+    max=0
+    for period in range(10,200,30):
+        if max < portfolio([period,2,2,50]):
+            max_period = period
+
+    max = 0
+    for initial_add in range(10, 200, 30):
+        for initial_period in range(1,10):
+            if max < portfolio([max_period, initial_add, initial_period, 50]):
+                max_initial_add = initial_add
+                max_initial_period = initial_period
+
+    max = 0
+    for rebalance in range(10,100,10):
+        if max < portfolio([max_period, max_initial_add, max_initial_period, rebalance]):
+            max_rebalance = rebalance
+
+    print("best values of M,X,N and P are %d,%d,%d and %f"%
+          (max_period,max_initial_add,max_initial_period,max_rebalance))
 
 
 if __name__ == '__main__':
