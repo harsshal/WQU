@@ -78,9 +78,9 @@ def find_month_with_max_workdays(work_dates,work_years,work_months):
 
 def calculate_hist_volatility(trade_date,index):
     df = pd.DataFrame(
-    {
-        "date": index.date[1:],
-        "perc": (index.close[1:] / index.close[:-1] -1)#percentage change
+        {
+            "date": index.date[1:],
+            "perc": (index.close[1:] / index.close[:-1] -1)#percentage change
         }
     )
     #consider the hstorical volatility before the trading date{
@@ -175,13 +175,13 @@ if __name__ == "__main__":
                                                         ,no_of_fut,'\n')
 
 
-
     #Get futures
     futures = get_hist_futures(fut_code,next_trade_day,end)
 
     num = len(futures)
     num_ind = len(dow_jones_index)
     diff = (num_ind - num)
+
     # Consider Spot Prices Close and Open for Delta calculation
     futures["Spot_Open"] = dow_jones_index.open[diff:]
     futures["Spot_Close"] = dow_jones_index.close[diff:]
@@ -215,7 +215,8 @@ if __name__ == "__main__":
             number_to_hedge.append(0)
             continue
         else:
-            current_delta = (closeF-openF)/(closeS-openS)
+            #current_delta = (closeF-openF)/(closeS-openS)
+            current_delta = e**(interest_rate*days_to_fut_expiry/252)
         if i == 0:
             prev_delta = current_delta
             continue
@@ -234,3 +235,46 @@ if __name__ == "__main__":
     futures["Buy_Or_Sell"] = verdict
     futures["Futures_to_Buy_or_Sell"] = number_to_hedge
     print(futures)
+#
+
+    print("Assuming option stike price is always futures' settle price, KPIs for un-hedged portfolio are :")
+    futures['returns'] = (futures['Settle'] - futures['Settle'].shift())/futures['Settle'].shift()
+    print("Average returns : ",futures['returns'].mean())
+
+    futures['pos'] = futures['returns']/abs(futures['returns'])
+    print("Total number of positive days :",
+          futures.groupby('pos')['returns'].count()[1]/
+          futures.groupby('pos')['returns'].count().sum())
+
+    futures['Week'] = list(map(lambda x: str(x.year) + str(x.weekofyear),futures.index))
+    print("Average weekly returns : ",futures.groupby('Week')['returns'].sum().mean())
+
+    print("Max daily drawdown : ",(futures['Settle']-futures['Settle'].shift()).min())
+    print("Max drawdown : ",futures['Settle'].max()-futures['Settle'].min())
+
+    print("Lake ratio : ",sum(futures['Settle'].max()-futures['Settle'])/sum(futures['Settle']))
+
+    print("GPR : ", futures['returns'].sum()/ abs(futures[futures['returns']<0]['returns'].sum()))
+
+
+    print("Combining calculated futures position with returns to get hedged portfolio, KPIs are :")
+    futures['hedge_positions'] = round(futures['Number_of_Futures'])
+    futures['hedge_returns'] = futures['returns']*futures['hedge_positions']
+    futures['total_returns'] = futures['returns']+futures['hedge_returns']
+
+    print("Average returns : ",futures['total_returns'].mean())
+
+    futures['pos'] = futures['total_returns']/abs(futures['total_returns'])
+    print("Total number of positive days :",
+          futures.groupby('pos')['returns'].count()[1]/
+          futures.groupby('pos')['returns'].count().sum())
+
+    futures['Week'] = list(map(lambda x: str(x.year) + str(x.weekofyear),futures.index))
+    print("Average weekly returns : ",futures.groupby('Week')['total_returns'].sum().mean())
+
+    print("Max daily drawdown : ",(futures['Settle']-futures['Settle'].shift()).min())
+    print("Max drawdown : ",futures['Settle'].max()-futures['Settle'].min())
+
+    print("Lake ratio : ",sum(futures['Settle'].max()-futures['Settle'])/sum(futures['Settle']))
+
+    print("GPR : ", futures['total_returns'].sum()/ abs(futures[futures['total_returns']<0]['total_returns'].sum()))
