@@ -18,3 +18,18 @@ def find_trend(series):
     regression = pd.ols(y=series, x=x)
 
     return regression.beta[0]
+
+def generate_portfolio(stock_list,start_date, end_date):
+    """
+    function which generate portfolio in a standard format
+    :param stock_list:['MT','JPM']
+    :param start_date:'20130101'
+    :param end_date:'20160101'
+    :return:port : panel with price and position dataframe
+    """
+    import pandas as pd
+
+    close = get_yahoo_data(stock_list,start_date,end_date).fillna(0)
+    position = pd.DataFrame(data=0,index=close.index,columns=close.columns)
+    portfolio = pd.Panel({'price':close,'pos':position})
+    return portfolio
