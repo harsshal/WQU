@@ -37,6 +37,9 @@ def resample_portfolio(portfolio):
     daily_rsi = rsi(daily_price)
     weekly_rsi = rsi(weekly_price)
 
+    # when daily_sma crosses weekly_sma and daily_rsi is positive as well
+    #trade = list(map(lambda(x : x), daily_rsi))
+
 
 def main():
     portfolio = data.generate_portfolio(['MSFT'],'20130101','20160101')
