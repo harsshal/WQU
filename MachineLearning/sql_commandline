@@ -1,0 +1,12 @@
+$ sqlite3 example.db 
+SQLite version 3.8.4.1 2014-03-11 15:27:36
+Enter ".help" for usage hints.
+sqlite> .tables
+stocks
+sqlite> select * from stocks;
+AGN|100.0|200.0
+MSFT|100.0|60.0
+IBM|200.0|30.0
+AAPL|100.0|40.0
+sqlite> 
+$
