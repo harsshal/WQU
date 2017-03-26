@@ -1,0 +1,2 @@
+exercise has asked us to import a lot of documents but not all were needed to get the wf-idf.
+I have printed top 10 in each category but lot of words have same weight of 7.2156 which is at the top and thus top 10 differ for each run.

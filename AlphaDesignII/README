@@ -1,0 +1,16 @@
+Because of limited computation power, I had to reduce the number of tickers and limit the history. But I have put in comments to make code easy to understand. These are the definition of types:
+Pyramid type:
+	Type 1: Upright pyramid
+	Type 2: Inverted pyramid
+	Type 3: Reflective pyramid
+
+Period type:
+	Type 1: 21 day EMA
+	Type 2: 45 day EMA
+
+Position sizing type:
+	Type 1: % volatility model
+	Type 2: Money's market model
+	Type 3: multi-tier model
+
+From the few observations after changing inputs, it looks like position sizing model has very small impact on returns. Period calulations have a bit more impact as oppose to position sizing model. BUt biggest impact was caused by pyramid type. It looks like inverted pyramid seems to be performing best, a bit better over upright pyramid. Reflective pyramid seems to be performing worst. (Given that we close our position after some time and markets are bullish over long period, this makes sense) 
