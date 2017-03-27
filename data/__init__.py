@@ -4,10 +4,15 @@ def setup_proxy(firm):
     import os
     os.environ['HTTP_PROXY'] = 'proxy.'+firm+'.com'
 
-def get_yahoo_data(tickers,start,end,only_close=1):
-    import pandas.io.data as web
+def get_yahoo_data(tickers,start,end=0,only_close=1):
+    #import pandas.io.data as web
+    import pandas_datareader.data as web
     import sys
     import warnings
+
+    if end == 0:
+        end = start
+
     with warnings.catch_warnings():
         warnings.filterwarnings('error')
         try:
