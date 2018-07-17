@@ -1,0 +1,28 @@
+Project should run in any platform but it has been developed on ubuntu.
+Project needs following programs in order to function properly.These commands are to be executed in application called 'Terminal' in ubuntu.
+
+Python 3.4 : Can be download from https://www.python.org/ or I used following command :
+sudo apt-get install python3
+SqLite3 : This also need to be installed on the machine. I used:
+sudo apt-get install sqlite3
+
+
+Project needs following python packages in order to function properly. These commands can also be executed in terminal or if you are using python IDE, you can execute in IDE as well.
+
+'data' package : This is the package developed during few of the courses of WQU. Code has been included and it should be in the same directory as python program.
+'pandas' package : This package is pretty standard and can be downloaded via pip as follows:
+pip install pandas
+pip install pandas-datareader
+'sqlite3' package : Again a standard package.
+pip install sqlite3
+'tensor-flow' package : When deciding how to implement ANN, there were few options available but this seems to be newer and becoming increasingly popular as its developed by Google. Installation was again pretty standard with pip, but I also saw online that installation on windows might not be straight forward.
+pip install tensorflow
+
+Developed files needed for the project can just be copy-pasted in any folder and passed to python executable downloaded from above.
+
+python populate_database.py
+python scenarios.py
+python combo.py
+
+First 2 commands build up database of closing prices and scenarios based on closing prices. Third program tried to combine those to generate a portfolio and outputs KPIs.
+
